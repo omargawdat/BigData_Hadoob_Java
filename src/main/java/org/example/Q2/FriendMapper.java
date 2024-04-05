@@ -1,22 +1,32 @@
 package org.example.Q2;
 
 import java.io.IOException;
-import org.apache.hadoop.io.LongWritable;
+import java.util.StringTokenizer;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class FriendMapper extends Mapper<LongWritable, Text, Text, Text> {
-    private final Text user = new Text();
+public class FriendMapper extends Mapper<Object, Text, Text, Text> {
+    private Text primaryFriend = new Text();
+    private Text secondaryFriend = new Text();
 
-    private final Text friend = new Text();
-
-    public void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
-        String[] parts = value.toString().split(",");
-        if (parts.length != 2)
-            return;
-        this.user.set(parts[0].trim());
-        this.friend.set(parts[1].trim());
-        context.write(this.user, this.friend);
-        context.write(this.friend, this.user);
+    @Override
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        StringTokenizer tokens = new StringTokenizer(value.toString(), ",");
+        String initialFriend = "P1";
+        while (tokens.hasMoreTokens()) {
+            String currentToken = tokens.nextToken();
+            if (currentToken.equals(initialFriend)) {
+                currentToken = tokens.nextToken();
+                primaryFriend.set(currentToken);
+                secondaryFriend.set("*");
+                context.write(primaryFriend, secondaryFriend);
+            } else {
+                primaryFriend.set(currentToken);
+                currentToken = tokens.nextToken();
+                secondaryFriend.set(currentToken);
+                context.write(primaryFriend, secondaryFriend);
+                context.write(secondaryFriend, primaryFriend);
+            }
+        }
     }
 }
