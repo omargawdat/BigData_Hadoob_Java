@@ -1,0 +1,30 @@
+package org.example.Q1_1;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+public class InnerReducer extends Reducer<Text, Text, Text, Text> {
+    private Text value = new Text();
+
+    public void reduce(Text key, Iterable<Text> values, Reducer<Text, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+        String t1Value = null;
+        String t2Value = null;
+        for (Text val : values) {
+            String[] fields = val.toString().split(",");
+            String tableName = fields[0];
+            String attributeValue = fields[1];
+            if (tableName.equals("T1")) {
+                t1Value = attributeValue;
+                continue;
+            }
+            if (tableName.equals("T2"))
+                t2Value = attributeValue;
+        }
+        if (t1Value != null && t2Value != null) {
+            this.value.set(String.format("%s,%s,%s", new Object[] { t2Value, key.toString(), t1Value }));
+            context.write(null, this.value);
+        }
+    }
+}
