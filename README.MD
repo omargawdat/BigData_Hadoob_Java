@@ -12,3 +12,11 @@ hadoop jar target/bigdata_3-1.0-SNAPSHOT.jar org.example.Q2.FriendDriver /input/
 ```
 hadoop jar target/bigdata_3-1.0-SNAPSHOT.jar org.example.Q3.KeyValueSort /input/Q3.txt /output/output3
 ```
+
+```
+start-dfs.sh
+```
+
+```
+hdfs dfs -chmod -R 777 /output
+```
