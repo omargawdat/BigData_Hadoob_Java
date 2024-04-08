@@ -22,9 +22,11 @@ public class DifferenceReducer extends Reducer<Text, Text, Text, Text> {
                 t2Values.add(Integer.parseInt(value.toString()));
             }
         }
-        t1Values.removeAll(t2Values);
-        context.write(new Text("T1-T2"), new Text(t1Values.toString()));
-
     }
 
+    @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException {
+        t1Values.removeAll(t2Values);
+        context.write(new Text("T1-T2"), new Text(t1Values.toString()));
+    }
 }
