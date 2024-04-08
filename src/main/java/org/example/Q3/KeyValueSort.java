@@ -19,7 +19,7 @@ public class KeyValueSort {
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] keyValue = value.toString().split("\t"); // Assuming tab delimiter
+            String[] keyValue = value.toString().split("\t");
             if (keyValue.length == 2) {
                 keyOut.set(keyValue[0]);
                 valueOut.set(keyValue[1]);
