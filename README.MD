@@ -6,7 +6,7 @@ hadoop jar target/bigdata_3-1.0-SNAPSHOT.jar org.example.Q1_3.Difference /input/
 ```
 - Q2:
 ```
-hadoop jar target/bigdata_3-1.0-SNAPSHOT.jar org.example.Q2.FriendDriver /input/Q2.txt /output/output2
+hadoop jar target/bigdata_3-1.0-SNAPSHOT.jar org.example.Q2.friendsdriver /input/Q2.txt /output/output2
 ```
 - Q3:
 ```
